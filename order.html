@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Orders</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+    <div class="container mt-5">
+        <h2>Your Orders</h2>
+        <button id="logout-button" class="btn btn-danger mb-3">Logout</button>
+        <div id="order-list" class="mt-4"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            function displayOrders() {
+                const orders = JSON.parse(localStorage.getItem('orders')) || [];
+                const orderList = $('#order-list');
+
+                if (orders.length === 0) {
+                    orderList.append('<p>No orders found.</p>');
+                    return;
+                }
+
+                // Clear the order list before displaying
+                orderList.empty();
+
+                orders.forEach((order, index) => {
+                    orderList.append(`
+                        <div class="order-item mb-3 p-3 border rounded">
+                            <h5>Order #${index + 1}</h5>
+                            <p><strong>Item:</strong> ${order.name}</p>
+                            <p><strong>Price:</strong> ${order.price}</p>
+                            <p><strong>Quantity:</strong> ${order.quantity}</p>
+                            <p><strong>Address:</strong> ${order.address}</p>
+                            <p><strong>Phone:</strong> ${order.phone}</p>
+                        </div>
+                    `);
+                });
+            }
+
+            // Logout functionality
+            $('#logout-button').click(function() {
+                // Clear orders from localStorage
+                localStorage.removeItem('orders');
+                // Optionally, redirect to login or home page
+                // window.location.href = 'login.html'; // Uncomment and set your login page
+                displayOrders(); // Refresh the order list to show no orders
+            });
+
+            displayOrders();
+        });
+    </script>
+</body>
+</html>
